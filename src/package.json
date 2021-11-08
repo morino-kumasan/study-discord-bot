@@ -1,0 +1,15 @@
+{
+  "name": "study-discord-bot",
+  "version": "0.1.0",
+  "description": "study discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "morino-kumasan",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "discord.js": "^13.3.1"
+  }
+}
