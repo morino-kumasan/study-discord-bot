@@ -1,21 +1,25 @@
 'use strict';
-const discord = require('discord.js');
-const config = require('./config.json');
 
-const { token, prefix } = config;
+const Discord = require('discord.js');
+const Config = require('./config.json');
+const StackStorage = require('./stack_storage.js');
+const Utility = require('./utility.js');
 
-const client = new discord.Client({ intents: [
-    discord.Intents.FLAGS.GUILDS,
-    discord.Intents.FLAGS.GUILD_MESSAGES,
+const { token, prefix } = Config;
+
+const client = new Discord.Client({ intents: [
+    Discord.Intents.FLAGS.GUILDS,
+    Discord.Intents.FLAGS.GUILD_MESSAGES,
+    Discord.Intents.FLAGS.GUILD_MEMBERS,
 ] });
 
-function InitializeBot() {
+function initializeBot() {
     console.log('Initialize Bot...');
     console.log(`settings: prefix=${prefix}`)
     console.log('Bot Running.');
 }
 
-function FinalizeBot(message) {
+function finalizeBot(message) {
     console.log('Finalize Bot...');
     message.channel.send(`Bye`);
 
@@ -29,16 +33,35 @@ function showHelp(message) {
     message.channel.send(`help text`);
 }
 
-function OnMessage(message) {
-    console.log('Message Received.');
-
-    if (message.content == `${prefix}help`) {
+function execArgs(message, args, prefix) {
+    if (args[0] == `${prefix}bye`) {
+        finalizeBot(message);
+    } else if (args[0] == `${prefix}help`) {
         showHelp(message);
-    } else if (message.content == `${prefix}quit`) {
-        FinalizeBot(message);
     }
 }
 
-client.once('ready', () => { InitializeBot(); });
-client.on('messageCreate', (message) => { OnMessage(message); });
+function onMessage(message) {
+    if (!message.content.startsWith(prefix)) {
+        return;
+    }
+
+    const args = message.content.split(/[ \t]+/);
+    console.log('Message Received.', args);
+
+    if (args.length == 0) {
+        return;
+    }
+
+    try {
+        execArgs(message, args, prefix);
+        StackStorage.execArgs(message, args, prefix);
+        Utility.execArgs(message, args, prefix);
+    } catch(e) {
+        console.log(e);
+    }
+}
+
+client.once('ready', () => { initializeBot(); });
+client.on('messageCreate', (message) => { onMessage(message); });
 client.login(token);
