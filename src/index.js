@@ -1,22 +1,21 @@
-'use strict';
+const { Client, Events, GatewayIntentBits } = require('discord.js');
 
-const Discord = require('discord.js');
-const Config = require('./config.json');
 const StackStorage = require('./stack_storage.js');
 const Utility = require('./utility.js');
 
-const { token, prefix } = Config;
+const prefix = "/";
+const token = process.env.DISCORD_TOKEN;
 
-const client = new Discord.Client({ intents: [
-    Discord.Intents.FLAGS.GUILDS,
-    Discord.Intents.FLAGS.GUILD_MESSAGES,
-    Discord.Intents.FLAGS.GUILD_MEMBERS,
+const client = new Client({ intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
 ] });
 
-function initializeBot() {
+function initializeBot(name) {
     console.log('Initialize Bot...');
     console.log(`settings: prefix=${prefix}`)
-    console.log('Bot Running.');
+    console.log(`Bot [${name}] Running.`);
 }
 
 function finalizeBot(message) {
@@ -62,6 +61,6 @@ function onMessage(message) {
     }
 }
 
-client.once('ready', () => { initializeBot(); });
-client.on('messageCreate', (message) => { onMessage(message); });
+client.once(Events.ClientReady, (client) => { initializeBot(client.user.username); });
+//client.on('messageCreate', (message) => { onMessage(message); });
 client.login(token);
