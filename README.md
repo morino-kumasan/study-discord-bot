@@ -18,6 +18,5 @@ src/config.json
 # 実行
 
 ```
-docker-compose run --rm node npm install
-docker-compose run --rm node node index.js
+docker-compose run --rm bot
 ```
