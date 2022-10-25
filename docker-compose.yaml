@@ -1,8 +1,14 @@
 version: '3'
 
 services:
-  node:
-    image: 'node:lts-alpine'
-    volumes:
-      - ./src:/src
-    working_dir: /src
+  bot:
+    build: .
+    env_file:
+      - ./secrets.env
+    init: true
+  deploy:
+    build: .
+    env_file:
+      - ./secrets.env
+    init: true
+    command: node deploy.js

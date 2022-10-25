@@ -1,44 +1,40 @@
-'use strict';
-const discord = require('discord.js');
-const config = require('./config.json');
+const { Client, Events, GatewayIntentBits } = require('discord.js');
 
-const { token, prefix } = config;
+// コマンド読み込み
+const { slashCommands } = require('./commands');
 
-const client = new discord.Client({ intents: [
-    discord.Intents.FLAGS.GUILDS,
-    discord.Intents.FLAGS.GUILD_MESSAGES,
+// イベントの読み込み
+const InteractionCreateEvent = require('./events/interactionCreate.js')
+
+const client = new Client({ intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildIntegrations,
 ] });
 
-function InitializeBot() {
-    console.log('Initialize Bot...');
-    console.log(`settings: prefix=${prefix}`)
-    console.log('Bot Running.');
-}
-
-function FinalizeBot(message) {
-    console.log('Finalize Bot...');
-    message.channel.send(`Bye`);
-
-    setTimeout(() => {
-        client.destroy();
-        process.exit();
-    }, 3000);
-}
-
-function showHelp(message) {
-    message.channel.send(`help text`);
-}
-
-function OnMessage(message) {
-    console.log('Message Received.');
-
-    if (message.content == `${prefix}help`) {
-        showHelp(message);
-    } else if (message.content == `${prefix}quit`) {
-        FinalizeBot(message);
+// Botにコマンド登録
+const RegisterCommands = (client, commands) => {
+    client.commands = new Map();
+    for (const command of commands) {
+        client.commands.set(command.data.name, command);
     }
-}
+};
 
-client.once('ready', () => { InitializeBot(); });
-client.on('messageCreate', (message) => { OnMessage(message); });
-client.login(token);
+// Botにイベント登録
+const RegisterEvents = (client, events) => {
+    for (const event of events) {
+        client.on(event.name, async (...args) => { await event.execute(...args) });
+    }
+};
+
+// Botの初期化
+const initializeBot = (name) => {
+    console.log('Initialize Bot...');
+    RegisterCommands(client, slashCommands);
+    RegisterEvents(client, [InteractionCreateEvent]);
+    console.log(`Bot [${name}] Ready.`);
+};
+
+// イベント登録
+client.once(Events.ClientReady, (client) => { initializeBot(client.user.username); });
+client.login(process.env.TOKEN);
