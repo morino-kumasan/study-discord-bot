@@ -13,7 +13,7 @@ https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&permissions=2048
 secrets.env
 
 ```
-DISCORD_TOKEN=トークンをコピペ
+TOKEN=トークン
 CLIENT_ID=クライアントID
 GUILD_ID=ギルドID
 ```
