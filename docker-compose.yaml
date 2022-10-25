@@ -6,3 +6,9 @@ services:
     env_file:
       - ./secrets.env
     init: true
+  deploy:
+    build: .
+    env_file:
+      - ./secrets.env
+    init: true
+    command: node deploy.js
