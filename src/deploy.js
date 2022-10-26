@@ -15,7 +15,7 @@ const deployCommandDeclarations = async (commands) => {
         const rest = new REST({ version: '10' }).setToken(token);
         const data = await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands.map((command) => command.data.toJSON()) });
         console.log(`Finished: ${data.length} commands`);
-    } catch(e) {
+    } catch (e) {
         console.error(e);
     }
 };

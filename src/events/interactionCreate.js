@@ -15,7 +15,7 @@ module.exports.execute = async (interaction) => {
 
     try {
         await command.execute(interaction);
-    } catch(e) {
+    } catch (e) {
         console.log(e);
     }
 };

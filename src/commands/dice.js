@@ -32,5 +32,12 @@ module.exports.execute = async (interaction) => {
     const dices = new Array(num).fill().map(() => getRandom(minVal, maxVal));
     const sum = dices.reduce((prev, cur) => prev + cur, 0);
     const color = threshold ? (sum <= threshold ? 0x00aa00 : 0xaa0000) : 0xaaaaaa;
-    await interaction.reply({ embeds: [{ color: color, title: `${num}d${maxVal}: ${dices.join(', ')} (${sum}) ${threshold ? `<= ${threshold}` : ""}` }]});
+    await interaction.reply({
+        embeds: [
+            {
+                color: color,
+                title: `${num}d${maxVal}: ${dices.join(', ')} (${sum}) ${threshold ? `<= ${threshold}` : ""}`
+            }
+        ]
+    });
 };

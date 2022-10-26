@@ -6,11 +6,12 @@ const { slashCommands } = require('./commands');
 // イベントの読み込み
 const InteractionCreateEvent = require('./events/interactionCreate.js')
 
-const client = new Client({ intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildIntegrations,
-] });
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+    ]
+});
 
 // Botにコマンド登録
 const RegisterCommands = (client, commands) => {
