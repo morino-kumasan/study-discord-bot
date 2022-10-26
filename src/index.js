@@ -1,10 +1,7 @@
 const { Client, Events, GatewayIntentBits } = require('discord.js');
 
-// コマンド読み込み
-const { slashCommands } = require('./commands');
-
-// イベントの読み込み
-const InteractionCreateEvent = require('./events/interactionCreate.js')
+const { slashCommands } = require('./commands.js');
+const { events } = require('./events.js');
 
 const client = new Client({
     intents: [
@@ -32,7 +29,7 @@ const RegisterEvents = (client, events) => {
 const initializeBot = (name) => {
     console.log('Initialize Bot...');
     RegisterCommands(client, slashCommands);
-    RegisterEvents(client, [InteractionCreateEvent]);
+    RegisterEvents(client, events);
     console.log(`Bot [${name}] Ready.`);
 };
 
