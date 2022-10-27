@@ -1,7 +1,10 @@
-
 module.exports.name = 'interactionCreate';
 
 module.exports.execute = async (interaction) => {
+    processCommand(interaction);
+};
+
+const processCommand = async (interaction) => {
     if (!interaction.isChatInputCommand()) {
         return;
     }
@@ -13,8 +16,10 @@ module.exports.execute = async (interaction) => {
         return;
     }
 
+    console.log(`[${interaction.user.username}] ${interaction}`);
+
     try {
-        await command.execute(interaction);
+        return command.execute(interaction);
     } catch (e) {
         console.log(e);
     }

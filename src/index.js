@@ -21,7 +21,7 @@ const RegisterCommands = (client, commands) => {
 // Botにイベント登録
 const RegisterEvents = (client, events) => {
     for (const event of events) {
-        client.on(event.name, async (...args) => { await event.execute(...args) });
+        client.on(event.name, async (...args) => event.execute(...args));
     }
 };
 

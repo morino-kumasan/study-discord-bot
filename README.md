@@ -18,6 +18,12 @@ CLIENT_ID=クライアントID
 GUILD_ID=ギルドID
 ```
 
+# ビルド
+
+```
+docker-compose build
+```
+
 # コマンド定義のデプロイ
 
 コマンドの定義が変わったら実行必要
